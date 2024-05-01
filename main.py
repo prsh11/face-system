@@ -2,8 +2,13 @@ import face_recognition
 import cv2
 import numpy as np
 import os
+from datetime import datetime
+from database import Database
 
+dat = Database("db.sqlite")
 video_capture = cv2.VideoCapture(0)
+
+today_date = datetime.now().date().strftime("%Y/%m/%d")
 
 known_face_encodings = []
 
@@ -13,7 +18,7 @@ for file in os.listdir("images"):
     image = face_recognition.load_image_file(f"images/{file}")
     encoding = face_recognition.face_encodings(image)[0]
     known_face_encodings.append(encoding)
-    known_face_names.append(file.split(".jpg")[0])
+    known_face_names.append(int(file.split(".jpg")[0]))
 
 
 face_locations = []
@@ -39,16 +44,18 @@ while True:
             matches = face_recognition.compare_faces(
                 known_face_encodings, face_encoding
             )
-            name = "Unknown"
+            id = -1
 
             face_distances = face_recognition.face_distance(
                 known_face_encodings, face_encoding
             )
             best_match_index = np.argmin(face_distances)
             if matches[best_match_index]:
-                name = known_face_names[best_match_index]
+                id = known_face_names[best_match_index]
 
+            name = dat.get_data(id)[1] if id != -1 else "Unknown"
             face_names.append(name)
+            dat.insert_record(id, today_date)
 
     process_this_frame = not process_this_frame
 

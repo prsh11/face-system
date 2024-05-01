@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 face-recognition = "*"
 opencv-python = "*"
+opencv-contrib-python = "*"
 
 [dev-packages]
 
