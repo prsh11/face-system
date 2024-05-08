@@ -55,7 +55,8 @@ while True:
 
             name = dat.get_data(id)[1] if id != -1 else "Unknown"
             face_names.append(name)
-            dat.insert_record(id, today_date)
+            if id != -1:
+                dat.insert_record(id, today_date)
 
     process_this_frame = not process_this_frame
 
