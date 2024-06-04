@@ -8,6 +8,8 @@ face-recognition = "*"
 opencv-python = "*"
 opencv-contrib-python = "*"
 scikit-learn = "*"
+deepface = "*"
+tf-keras = "*"
 
 [dev-packages]
 
